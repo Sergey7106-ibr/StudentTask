@@ -1,0 +1,81 @@
+<html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="styles.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+<body>
+  <div id = "base"> 
+    <br>
+    <div id="completion"> 
+      
+      <br> &emsp;
+      <label>Приоритет: </label>  &emsp; &nbsp; 
+      <label>Текст задачи:</label> <br> &emsp;
+      <select  id = "priority" name="priority">
+          <option  value="Низкий">Низкий</option>
+          <option value="Средний" selected>Средний</option>
+          <option value="Высокий">Высокий</option>
+      </select> &nbsp;      
+      <input id = "input" type="text" name="text"  placeholder="Введите текст"> &nbsp; 
+      <button id = "create"  onclick = "showInput()" class="buttonCreate"; >Добавить задачу</button>
+
+    </div>
+
+    <div id="control"></form>
+      <br> &nbsp; &nbsp; 
+      
+      <label>Фильтр по приоритету: </label> &nbsp;
+      <select name="filters" id = "filters"  >
+        <option value="filterAny">любой</option>
+        <option value="filterLow" >низкий </option>
+        <option value="filterMiddle">средний</option>
+        <option value="filterHigh">высокий</option>
+      </select>
+
+      &emsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+      <label>Фильтр по статусу: </label> &nbsp; 
+        активные <input type="checkbox" name="active" value="активные"> 
+        отмененные <input type="checkbox" name="canceled" value="отмененные"> 
+        завершенные <input type="checkbox" name="completed" value="завершенные"> 
+      
+        <br><br> &nbsp; &nbsp; 
+      
+        <label>Сортировка по дате: </label>  &nbsp; &hairsp; &hairsp; &hairsp;
+      <select name="dataSort" id = "dataSort">
+        <option value="dateIncrease" selected>дата создания  &uarr;</option>
+        <option value="dateDecrease" >дата создания  &darr;</option>
+      </select>
+     
+        &emsp; &emsp; &nbsp; 
+     
+      <label>Сортировка по приоритету: </label> &emsp;
+      <select name="prioritySort" id = "prioritySort">
+        <option value="prioritIncrease" selected> приоритет  &uarr;</option>
+        <option value="prioritDecrease" > приоритет  &darr;</option>
+      </select>
+      
+      <br><br> &nbsp; &nbsp;
+      
+      <label>Поиск задачи по тексту: </label>
+      <input type="search" id = "search"  name="search" placeholder="Начните вводить текст задачи...">
+    
+
+
+    </div>
+        
+    <div id = "tasks" style ="overflow-y: scroll">
+    </div>
+        
+    <script src="index.js" type="text/javascript"></script>
+    </div>
+</body>
+</html>
