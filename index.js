@@ -3,12 +3,11 @@ let $div = document.getElementById('tasks');
 let $task = document.createElement('div');
 let taskArr = [];
 let obj = document.createElement('div');
+
 for(var i = 0; i<= obj.childNodes.length; i++)
 {
 function showInput()
-
 {   
-
    {        
             let taskLocal = document.createElement('div');
             taskLocal.id = "taskLocal" + i;
@@ -39,10 +38,6 @@ function showInput()
             btn1.type = 'button';
             btn1.className = "button";
             btn1.innerText = "✓";
-            this.$input = $input;
-            this.nowDate = nowDate;
-            this.btn = btn;
-            this.btn1 = btn1;
 
             newDiv  =
             { 
@@ -88,58 +83,59 @@ function showInput()
         obj.name = i;
         newDiv.id = "newtask"+i;
         document.getElementById('cancelButton'+(i)).onclick = cancelTask;
-        console.log();
         document.getElementById('acceptButton'+(i)).onclick = doneTask;
-
-        function cancelTask()
-        {
-            document.getElementById('obj'+ (i-1)).style.background = '#d83030';;
-            optionDiv.style.color = 'red';
-            btn.remove();
-        }
         function doneTask()
         {   
             for (b=0; b<=taskArr.length;b++)
             {
-                console.log(document.getElementById('acceptButton'+(i-1)).name);
-            if((taskLocal.name) == (document.getElementById('acceptButton'+(i-1)).name))
+            if((document.getElementById('acceptButton'+(i)).name) == (i))
             {
                 console.log(i);
                 document.getElementById('obj'+ (i-1)).style.background = '#75d868';
                 optionDiv.style.color = 'green';
                 btn1.remove();
                 console.log(taskLocal.name);
-                if (document.getElementById('obj'+ (i-1)).style.background=='#75d868')
-                {
-                    break;
-                }
             }
-
+            else if ((taskLocal.name) == (document.getElementById('acceptButton'+(i)).name)) {
+                
             }
-            
+            }
         }
+        function cancelTask()
+        {
+            document.getElementById('obj'+ (i-1)).style.background = '#d83030';;
+            optionDiv.style.color = 'red';
+            btn.remove();
+        }
+        console.log(document.getElementById('acceptButton'+(i)));
+
         function deleteTask()
         {   
             document.getElementById('taskLocal' + (i-1)).remove();
         }
         console.log(document.getElementById('taskLocal'+i));
-
-
         }
         document.getElementById("input").value = "";
-        
+        console.log(taskArr.length);
+        console.log(taskArr);
     }
     }
-    console.log(taskArr.length);
-    console.log(taskArr);
     
     $div.appendChild($task);
-    
-
 } 
+
+console.log(taskArr);
+function dataSort()
+{
+    for(i= 0; i<=taskArr.length; i++)
+    {
+
+    }
+}
+
 for(i=0;i<=taskArr.length;i++)
 {
-
+    
 }
 
 
