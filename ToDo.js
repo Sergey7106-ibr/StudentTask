@@ -171,21 +171,21 @@ function filterPrior()
     });*/
     divTaskArr.forEach(element => {
         element.style.display = 'block';
-        if(filterValue == "filterMiddle" && element.firstChild.textContent !== "Средний")
+        if(filterValue === "filterMiddle" && element.firstChild.textContent !== "Средний")
         {
             element.style.display = 'none';
         }
-        else if(filterValue == "filterLow" && element.firstChild.textContent !== "Низкий")
+        else if(filterValue === "filterLow" && element.firstChild.textContent !== "Низкий")
         {
             element.style.display = 'none';
         }
-        else if(filterValue == "filterHigh" && element.firstChild.textContent !== "Высокий")
+        else if(filterValue === "filterHigh" && element.firstChild.textContent !== "Высокий")
         {
             element.parentNode.style.display = 'block'; 
             element.style.display = 'none';
 
         }
-        else if(filterValue == "filterAny")
+        else if(filterValue === "filterAny")
         {
             element.style.display = 'block';
         }
