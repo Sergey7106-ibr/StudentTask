@@ -43,22 +43,22 @@
       &emsp; &nbsp; &nbsp; &nbsp; &nbsp;
 
       <label>Фильтр по статусу: </label> &nbsp; 
-        активные <input type="checkbox" name="active" value="активные"> 
-        отмененные <input type="checkbox" name="canceled" value="отмененные"> 
-        завершенные <input type="checkbox" name="completed" value="завершенные"> 
-      
-        <br><br> &nbsp; &nbsp; 
+        активные <input id="checkboxActive" class = "checkbox" type="checkbox" value="" onclick="filterStatus(0)"> 
+        отмененные <input id="checkboxCanceled" class = "checkbox" type="checkbox" value="" onclick="filterStatus(1)"> 
+        завершенные <input id="checkboxComleted" class = "checkbox"  type="checkbox"  value="" onclick="filterStatus(2)"> 
+
+        <br><br> &nbsp; &nbsp;
       
         <label>Сортировка по дате: </label>  &nbsp; &hairsp; &hairsp; &hairsp;
-      <select name="dataSort" id = "dataSort">
-        <option value="dateIncrease" selected>Дата создания  &uarr;</option>
-        <option value="dateDecrease" >Дата создания  &darr;</option>
+      <select id = "dataSort" onchange="dataSort()">
+        <option  value="dataIncrease" selected>Дата создания  &uarr;</option>
+        <option value="dataDecrease" >Дата создания  &darr;</option>
       </select>
      
         &emsp; &emsp; &nbsp; 
      
       <label>Сортировка по приоритету: </label> &emsp;
-      <select name="prioritySort" id = "prioritySort">
+      <select id = "prioritySort" onchange="prioiritySort()">
         <option value="prioritIncrease" selected> Приоритет  &uarr;</option>
         <option value="prioritDecrease" > Приоритет  &darr;</option>
       </select>
@@ -66,7 +66,7 @@
       <br><br> &nbsp; &nbsp;
       
       <label>Поиск задачи по тексту: </label>
-      <input type="search" id = "search"  name="search" placeholder="Начните вводить текст задачи...">
+      <input type="search" id = "search"  placeholder="Начните вводить текст задачи..." oninput="searchDiv()">
     
 
 
