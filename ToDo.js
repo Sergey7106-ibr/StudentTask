@@ -2,24 +2,36 @@ let $div = document.getElementById('tasks');
 let taskArr = [];
 let divTaskArr= [];
 let ArrCancelStatus = [];
-
+let newtask = {};
 
 function createNewTask()
 {
         let $prior = document.getElementById('priority').value;
         let input = document.getElementById('input').value;
-        let $input = document.createElement('div');
-        $input.append(input);
-        let now = new Date().toLocaleDateString() + "  " + new Date().toLocaleTimeString();
-        for(i=0;i<=taskArr.length; i++)
+        let now = new Date();
+        let priorNumber
+        switch(newtask.priority)
+            {    
+                case 'Низкий':
+                priorNumber = 0;
+                break;
+                case 'Средний':
+                priorNumber = 1;
+                break;
+                case 'Высокий':
+                priorNumber = 2;
+                break;
+            }
+        for(let i=0;i<=taskArr.length; i++)
         {
         newtask = 
         {
         id: i,
         status: 'active',
-        input: $input,
+        input: input,
         priority: $prior,
         data: now,
+        priorNumber,
         cancelBtn: createCancelBtn(),
         acceptBtn: creataAcceptBtn(),
         deleteBtn: createRemovalBtn()
@@ -29,24 +41,31 @@ function createNewTask()
 return (newtask);
 }
 
+function createTaskArr()
+{
+    taskArr.push(createNewTask());
+    return taskArr;
+}
+
 function createDate()
 {
     let nowDate = document.createElement('div');
-    nowDate.id = "nowDate";
-    nowDate.innerHTML = newtask.data;
+    nowDate.className = "nowDate";
+    nowDate.innerHTML = newtask.data.toLocaleString();
     return nowDate;
 }
 
 function createNewDiv(newtask)
 {
     let priorDiv = document.createElement('div');
-    priorDiv.id = "priorDiv";
-    priorDiv.name = "priorDiv";
+    priorDiv.className = "priorDiv";
     let obj = document.createElement('div');
-    obj.id = "obj";
+    let inputDiv = document.createElement('div');
+    inputDiv.append(newtask.input);
+    obj.className = "obj";
     let $task = document.createElement('div');
     priorDiv.append(newtask.priority);
-    obj.append(newtask.input);
+    obj.append(inputDiv);
     obj.append(createDate());
     obj.append(newtask.cancelBtn);
     obj.append(newtask.acceptBtn);
@@ -55,11 +74,43 @@ function createNewDiv(newtask)
     $task.append(obj);
     $task.append(newtask.deleteBtn);
     $div.appendChild($task);
-    divTaskArr.push($task);
-    taskArr.push(createNewTask());
     for(i=0;i<=taskArr.length;i++)
     {
         $task.id=i;
+    }
+    divTaskArr.push($task);
+    taskArr.push(createNewTask());
+    obj.firstChild.onclick = ()=>
+    {
+        let newTextArea = document.createElement('textarea');
+        newTextArea.className = 'textarea';
+        newTextArea.value = obj.firstChild.innerHTML;
+        obj.firstChild.replaceWith(newTextArea);
+        newTextArea.focus();
+        newTextArea.onblur = function()
+        {
+            
+            obj.firstChild = newTextArea.value;
+            newTextArea.replaceWith(obj.firstChild);
+
+            for(let i=0; i<taskArr.length; i++)
+            {
+                textAreas = document.querySelectorAll('textarea')
+                textAreas.forEach(element => {
+                if(taskArr[i].id.toString() === element.parentNode.parentNode.id)
+                {
+                    taskArr[i].input = element.value;
+                }
+                newTextArea.style.fontSize = "100%";
+                newTextArea.append(newTextArea.value);
+            });
+            }
+        }
+        newTextArea.addEventListener('keyup', function(){
+            if(this.scrollTop > 0){
+              this.style.height = this.scrollHeight + "px";
+            }
+          });   
     }
     return($div);
 
@@ -70,25 +121,21 @@ function createCancelBtn()
     let cancel =  document.createElement('button');
     cancel.innerText = "×";
     cancel.className = 'button';
-    cancel.name = 'cancel';
-    cancelArr = document.getElementsByName('cancel');
-    cancelArr.forEach(function(item) {
-        item.addEventListener("click", function(){
-            item.parentNode.style.background = '#b82e2e';
-            item.parentNode.parentNode.firstChild.style.color = 'red';
-            for(i=0;i<taskArr.length;i++)
+        cancel.addEventListener("click", function(){
+            cancel.parentNode.style.background = '#b82e2e';
+            cancel.parentNode.parentNode.firstChild.style.color = 'red';
+            if(cancel.parentNode.firstChild !== undefined)
             {
-                if (item.parentNode.parentNode.id == taskArr[i].id)
-                {
-                taskArr[i-1].status = 'canceled';
-                }           
-                else if (item.parentNode.parentNode.id == taskArr.length) 
-                {
-                    taskArr[taskArr.length-1].status = 'canceled'
-                }     
+                cancel.parentNode.firstChild.style.background = '#b82e2e';
             }
-        });
-    }); 
+            for(let i=0;i<taskArr.length;i++)
+            {
+                if (cancel.parentNode.parentNode.id === taskArr[i].id.toString())
+                {
+                taskArr[i].status = 'canceled';
+                }             
+            }
+        }); 
     return cancel;
 }
 
@@ -97,25 +144,22 @@ function creataAcceptBtn()
     let accept =  document.createElement('button');
     accept.innerText = "✓";
     accept.className = 'button';
-    accept.name = 'accept';
-    acceptArr = document.getElementsByName('accept');
-    acceptArr.forEach(function(item) {
-        item.addEventListener("click", function(){
-            item.parentNode.style.background = '#75d868';
-            item.parentNode.parentNode.firstChild.style.color = 'green';
-            for(i=0;i<taskArr.length;i++)
+    accept.addEventListener("click", function(){
+            accept.parentNode.style.background = '#75d868';
+            accept.parentNode.parentNode.firstChild.style.color = 'green';
+            if(accept.parentNode.firstChild !== undefined)
             {
-                if (item.parentNode.parentNode.id == taskArr[i].id)
+                accept.parentNode.firstChild.style.background = '#75d868';
+            }
+            for(let i=0;i<taskArr.length;i++)
+            {
+                if (accept.parentNode.parentNode.id === taskArr[i].id.toString())
                 {
-                taskArr[i-1].status = 'completed';
-                }
-                else if (item.parentNode.parentNode.id == taskArr.length) 
-                {
-                    taskArr[taskArr.length-1].status = 'completed'
+                taskArr[i].status = 'completed';
                 }
             }
         });
-    }); 
+
     return accept;
 }
 
@@ -124,51 +168,29 @@ function createRemovalBtn()
     let removal =  document.createElement('button');
     removal.className = 'button';
     removal.className = "fa fa-trash";
-    removal.name = "removal"
-    removalArr = document.getElementsByName("removal")
-    removalArr.forEach(function(item) {
-        item.addEventListener("click", function(){
-            if(item.parentNode.parentNode===null)
+    removal.addEventListener("click", function(){
+            if(removal.parentNode.parentNode===null)
             {
                 return;
             }
             else{
-            item.parentNode.parentNode.removeChild(item.parentNode);
-            for(i=0;i<taskArr.length;i++)
+                removal.parentNode.parentNode.removeChild(removal.parentNode);
+            for(let i=0;i<taskArr.length;i++)
             {
-                if (item.parentNode.id == taskArr[i].id)
+                if (removal.parentNode.id == taskArr[i].id)
                 {
-                delete taskArr[i-1];
-                taskArr = taskArr.filter(element => element !== null);
-                console.log(taskArr);
+                taskArr.splice(i, 1);
                 }
-                else if (item.parentNode.id == taskArr.length) {
-                    delete taskArr.pop();
-                    taskArr = taskArr.filter(element => element !== null);    
-                } 
             }
             }
-            console.log(taskArr);
         });
-    });     
-    return removal;
+      return removal;
 }
 
 function filterPrior()
 {
     filterValue = document.getElementById('filters').value;
-    /*filterMiddleTask = taskArr.filter(function(item)
-    {
-        return (item.priority == "Средний" && filterValue == "filterMiddle");
-    });
-    filterLowTask = taskArr.filter(function(item)
-    {
-        return (item.priority == "Низкий" && filterValue == "filterLow");
-    });
-    filterHighTask = taskArr.filter(function(item)
-    {
-        return (item.priority == "Высокий" && filterValue == "filterHigh");
-    });*/
+
     divTaskArr.forEach(element => {
         element.style.display = 'block';
         if(filterValue === "filterMiddle" && element.firstChild.textContent !== "Средний")
@@ -192,130 +214,98 @@ function filterPrior()
     });
 }
 
-function filterActiveStatus()
+function filterStatus(i)
 {
-    checkboxActive = document.getElementById('checkboxActive');
-    if (checkboxActive.value == 1) {
-        checkboxActive.value = 0; 
-    }
-    else
-    {
-        checkboxActive.value = 1;
-    }
-    ArrActiveStatus = taskArr.filter(function(item){
-        return (item.status == "active");
-    });
-    divTaskArr.forEach(element =>{
+        status = document.getElementsByClassName('checkbox')[i].checked;
+        divTaskArr.forEach(element =>{
         element.style.display = 'none';
-        if (checkboxActive.value == 1 && element.children[1].style.background == 'rgb(255, 255, 255)')
+        if(status === 'true')
+        {
+           if(element.children[1].style.background ==='rgb(255, 255, 255)' && i === 0)
+            {
+                element.style.display = 'block';
+            }
+            else if (element.children[1].style.background === 'rgb(117, 216, 104)' && i === 2)
+            {
+                element.style.display = 'block';
+            }
+            else if (element.children[1].style.background === 'rgb(184, 46, 46)' && i === 1)
+            {
+                element.style.display = 'block';
+            }
+        }
+        else if(status === 'false') 
         {
             element.style.display = 'block';
-        };
-        if (checkboxActive.value == 0)
+        }
+        })
+}
+
+
+function createDivTaskArr(taskArr)
+{
+    divTaskArr.forEach(element => {
+        element.remove();
+    });
+    divTaskArr.splice(0);
+    taskArr.forEach(element => {
+        createNewDiv(element);
+        taskArr.pop();
+        if(element.status === 'completed')
         {
-            element.style.display = "block";
+            obj.style.background = '#75d868';
+            priorDiv.style.color = 'green';
+        }
+        else if(element.status === 'canceled')
+        {
+            obj.style.background = '#b82e2e';
+            priorDiv.style.color = 'red';
         }
     });
 }
-
-function filterComletedStatus()
-{
-    checkboxComleted = document.getElementById('checkboxComleted');
-    if (checkboxComleted.value == 1) {
-        checkboxComleted.value = 0; 
-    }
-    else
-    {
-        checkboxComleted.value = 1;
-    }
-    ArrComletedStatus = taskArr.filter(function(item){
-        return (item.status == "completed");
-    });
-    divTaskArr.forEach(element =>{
-        element.style.display = 'none';
-        if (checkboxComleted.value == 1 && element.children[1].style.background == 'rgb(117, 216, 104)')
-        {
-            element.style.display = 'block';
-        };
-        if (checkboxComleted.value == 0)
-        {
-            element.style.display = 'block';
-        }
-    });
-};
-
-function filterCanceledStatus()
-{
-    checkboxCanceled = document.getElementById('checkboxCanceled');
-    if (checkboxCanceled.value == 1) {
-        checkboxCanceled.value = 0; 
-    }
-    else
-    {
-        checkboxCanceled.value = 1;
-    }
-    ArrCancelStatus = taskArr.filter(function(item){
-        return (item.status == "canceled");
-    });
-    divTaskArr.forEach(element =>{
-        element.style.display = 'none';
-        if (checkboxCanceled.value == 1 && element.children[1].style.background == 'rgb(184, 46, 46)')
-        {
-            element.style.display = 'block';
-        }
-        if (checkboxCanceled.value == 0)
-        {
-            element.style.display = 'block';
-        };
-        });
-};
 
 function dataSort()
 {  
-        let dateArr = [];
-    if (document.getElementById('dataSort').value = 'dateIncrease')
+    if(document.getElementById('dataSort').value === 'dataDecrease')
     {
-        for (i=0; i<divTaskArr.length; i++)
-        {
-           dateArr[i] = divTaskArr[i].children[1].children[1].textContent;
-        }
-        for (i=0; i<divTaskArr.length; i++)
-        {
-            b = dateArr[i+1];
-            a = dateArr[i];
-
-            if(b !== undefined);
-            {   
-            divTaskArr.sort(function(a, b)
-        {
-            if (a<b)
-            {
-                return 1;
-            }
-            else if (a>b)
-            {
-                return -1;
-            }
-            else{
-                return 0;
-            }
-            }
-            )}
-        };
-        console.log(divTaskArr);
+    taskArr.sort((a, b) => b.data.getTime() - a.data.getTime());
     }
+    else
+    {
+    taskArr.sort((a, b) => a.data.getTime() - b.data.getTime());            
+    }
+    createDivTaskArr(taskArr);
 }
 
+function prioiritySort()
+{
+   if(document.getElementById('prioritySort').value === 'prioritIncrease')
+    {
+        taskArr.sort((a,b) => b.priorNumber - a.priorNumber);
+    }
+    else
+    {
+        taskArr.sort((a,b) => a.priorNumber - b.priorNumber); 
+    }
+    createDivTaskArr(taskArr);
+    
+}
 
-
-
-
-
-
-
-
-
-
+function searchDiv()
+{   
+    let inputValue = document.getElementById('search').value;
+    divTaskArr.forEach(element=>
+        {
+            if(element.children[1].firstChild.innerText.search(inputValue) === -1)
+            {
+            element.style.display = 'none';
+            }
+            else
+            {
+            element.style.display = 'block';
+            }
+        });
+}
 
 
 
@@ -323,11 +313,12 @@ function dataSort()
 
 document.getElementById("create").onclick = function ()
 {
-    if (createNewTask().input.textContent == '') {
+    
+    if (createNewTask().input.textContent === '') {
        alert("Ввод пуст!") 
     }
     else{
     createNewDiv(newtask);
     }
-    document.getElementById("input").value = ""
-};
+    document.getElementById("input").value = '';
+}
